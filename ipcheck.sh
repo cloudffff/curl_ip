@@ -13,7 +13,7 @@ PROXY_PORT=""
 # بررسی آرگومان‌ها
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -p)
+    -ph)
       USE_PROXY=true
       PROXY_PORT="$2"
       shift 2
@@ -32,7 +32,7 @@ if $USE_PROXY; then
     echo "❌ پورت پروکسی وارد نشده است."
     exit 1
   fi
-  CURL_CMD="curl -s --max-time 5 --proxy http://127.0.0.1:$PROXY_PORT --socks5-hostname 127.0.0.1:$PROXY_PORT"
+  CURL_CMD="curl -s --max-time 5 -x http://127.0.0.1:$PROXY_PORT"
 else
   CURL_CMD="curl -s --max-time 5"
 fi
