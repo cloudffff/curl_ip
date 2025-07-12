@@ -73,9 +73,9 @@ echo "📡 Server IP: $ip"
     exit 1
   fi
   CURL_CMD="curl -s --max-time 5 -x http://127.0.0.1:$PROXY_PORT"
-else
+  else
   CURL_CMD="curl -s --max-time 5"
-fi
+  fi
 
 # دریافت IP و کشور
 ip=$($CURL_CMD https://ifconfig.co/)
