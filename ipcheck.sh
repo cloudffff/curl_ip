@@ -27,7 +27,47 @@ while [[ $# -gt 0 ]]; do
 done
 
 # تعریف فرمان curl
-if $USE_PROXY; then
+if $USE_PROXY; then#!/bin/bash
+
+# مقادیر اولیه
+SOCKS_PORT=""
+HTTP_PORT=""
+
+# پردازش ورودی‌ها
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -ps)
+      SOCKS_PORT="$2"
+      shift 2
+      ;;
+    -ph)
+      HTTP_PORT="$2"
+      shift 2
+      ;;
+    *)
+      echo "استفاده درست:"
+      echo "  ./server-info.sh -ps [SOCKS_PORT]"
+      echo "  ./server-info.sh -ph [HTTP_PORT]"
+      exit 1
+      ;;
+  esac
+done
+
+# تنظیم پراکسی برای curl
+CURL_CMD="curl -s"
+
+if [[ -n "$SOCKS_PORT" ]]; then
+  CURL_CMD+=" --socks5 127.0.0.1:$SOCKS_PORT"
+elif [[ -n "$HTTP_PORT" ]]; then
+  CURL_CMD+=" -x http://127.0.0.1:$HTTP_PORT"
+fi
+
+# گرفتن اطلاعات
+country=$($CURL_CMD ifconfig.co/country)
+ip=$($CURL_CMD ifconfig.co)
+
+echo "🌍 Server Location: $country"
+echo "📡 Server IP: $ip"
   if [[ -z "$PROXY_PORT" ]]; then
     echo "❌ پورت پروکسی وارد نشده است."
     exit 1
