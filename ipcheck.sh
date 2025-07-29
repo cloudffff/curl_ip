@@ -30,8 +30,8 @@ elif [[ -n "$HTTP_PORT" ]]; then
   CURL_CMD+=" -x http://127.0.0.1:$HTTP_PORT"
 fi
 
-# country=$($CURL_CMD http://ifconfig.co/country)
 ip=$($CURL_CMD https://api.ipify.org)
+country=$(curl -sS "http://ip-api.com/json/$ip" | jq -r '.country')
 
 echo "🌍 Server Location: $country"
 echo "📡 Server IP: $ip"
